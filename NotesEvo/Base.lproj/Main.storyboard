@@ -13,7 +13,7 @@
         <!--Заметки-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="NotesViewController" id="BYZ-38-t0r" customClass="NotesViewController" customModule="EvoNotes" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NotesViewController" id="BYZ-38-t0r" customClass="NotesViewController" customModule="NotesEvo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -22,9 +22,17 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" id="egy-AN-c2z">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="BYZ-38-t0r" id="4Dd-g8-Nlf"/>
+                                    </connections>
+                                </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Note" id="6ZD-iQ-wgg">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6ZD-iQ-wgg" id="uXD-Nz-l2Q">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -51,30 +59,49 @@
                             <barButtonItem style="plain" systemItem="edit" id="waN-h4-55Z"/>
                         </rightBarButtonItems>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchBar" destination="egy-AN-c2z" id="6us-1W-eBf"/>
+                        <outlet property="tableView" destination="XN6-e0-AO7" id="AtK-1R-Rk0"/>
+                        <segue destination="2UL-O5-6dK" kind="show" id="V6i-cE-E0C"/>
+                        <segue destination="eOZ-fy-RUA" kind="show" id="2JJ-t9-bEX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1674" y="788"/>
+            <point key="canvasLocation" x="1767" y="788"/>
         </scene>
         <!--Note Details View Controller-->
         <scene sceneID="oA8-Jy-diL">
             <objects>
-                <viewController storyboardIdentifier="NoteDetailsViewController" id="eOZ-fy-RUA" customClass="NoteDetailsViewController" customModule="EvoNotes" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NoteDetailsViewController" id="eOZ-fy-RUA" customClass="NoteDetailsViewController" customModule="NotesEvo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aL3-SC-SGW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kce-YY-1OH">
+                                <rect key="frame" x="16" y="48" width="343" height="209"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="XPq-2S-Ldg"/>
                     </view>
+                    <navigationItem key="navigationItem" id="dBU-SD-GXd"/>
+                    <connections>
+                        <outlet property="noteDetailOutlet" destination="Kce-YY-1OH" id="Mnl-RD-Z1S"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HFR-Uz-8aG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="849" y="1473"/>
+            <point key="canvasLocation" x="2577" y="1162"/>
         </scene>
         <!--Create New Note View Controller-->
         <scene sceneID="eez-bA-spq">
             <objects>
-                <viewController storyboardIdentifier="CreateNewNoteViewController" id="2UL-O5-6dK" customClass="CreateNewNoteViewController" customModule="EvoNotes" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CreateNewNoteViewController" id="2UL-O5-6dK" customClass="CreateNewNoteViewController" customModule="NotesEvo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vpj-uv-wHg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -88,6 +115,9 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Что вы хотите добавить в заметки?"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="delegate" destination="2UL-O5-6dK" id="bQK-03-JS5"/>
+                                </connections>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -96,18 +126,18 @@
                     <navigationItem key="navigationItem" id="Iyt-jj-g3d">
                         <barButtonItem key="rightBarButtonItem" style="plain" systemItem="save" id="9sb-EH-qxP">
                             <connections>
-                                <action selector="SaveBtnAction:" destination="2UL-O5-6dK" id="Eao-f1-u3O"/>
+                                <action selector="saveBtnAction:" destination="2UL-O5-6dK" id="Eao-f1-u3O"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="NoteTextOutlet" destination="RCX-tO-ZXg" id="1b3-iH-w9J"/>
-                        <outlet property="SaveBtnOutlet" destination="9sb-EH-qxP" id="GYH-0a-kKb"/>
+                        <outlet property="noteTextOutlet" destination="RCX-tO-ZXg" id="BNg-G7-NB8"/>
+                        <outlet property="saveBtnOutlet" destination="9sb-EH-qxP" id="g0A-Xa-nJc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hva-GQ-NGP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1672.8" y="73.313343328335833"/>
+            <point key="canvasLocation" x="2577" y="491"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="x7z-x4-2DJ">
@@ -126,24 +156,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gN9-Ey-ov7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="848.79999999999995" y="787.55622188905556"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="InA-qU-cPS">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qvp-Ls-bLQ" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="zXO-Dd-vYC">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="2UL-O5-6dK" kind="relationship" relationship="rootViewController" id="VQq-mh-vpP"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hZO-Nv-4KX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="849" y="73"/>
         </scene>
     </scenes>
 </document>
