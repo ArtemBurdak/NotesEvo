@@ -14,7 +14,7 @@ class CreateNewNoteViewController: UIViewController {
     @IBOutlet weak var noteTextOutlet: UITextView!
     @IBOutlet weak var saveBtnOutlet: UIBarButtonItem!
 
-    private let placeholder = "Что вы хотите добавить в заметки?"
+//    private let placeholder = "Что вы хотите добавить в заметки?"
 //    private let contextManager = ContextManager.sharedInstance
     private let dataManager = DataManager.sharedInstance
     var callback: (()->())?
@@ -22,9 +22,9 @@ class CreateNewNoteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        noteTextOutlet.text = placeholder
-        noteTextOutlet.textColor = UIColor.lightGray
-        navigationItem.title = "Create new note"
+//        noteTextOutlet.text = placeholder
+//        noteTextOutlet.textColor = UIColor.lightGray
+//        navigationItem.title = "Create new note"
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -35,7 +35,7 @@ class CreateNewNoteViewController: UIViewController {
 
     private func checkSaveButtonEnabled() {
 
-        let isEnabled = !noteTextOutlet.text.isEmpty && !noteTextOutlet.text.contains(placeholder) && !noteTextOutlet.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty
+        let isEnabled = !noteTextOutlet.text.isEmpty && !noteTextOutlet.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty
         saveBtnOutlet.isEnabled = isEnabled
     }
 
@@ -53,19 +53,19 @@ class CreateNewNoteViewController: UIViewController {
 
 extension CreateNewNoteViewController: UITextViewDelegate {
 
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if noteTextOutlet.textColor == UIColor.lightGray {
-            noteTextOutlet.text = nil
-            noteTextOutlet.textColor = UIColor.black
-        }
-    }
-
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if noteTextOutlet.text.isEmpty {
-            noteTextOutlet.text = placeholder
-            noteTextOutlet.textColor = UIColor.lightGray
-        }
-    }
+//    func textViewDidBeginEditing(_ textView: UITextView) {
+//        if noteTextOutlet.textColor == UIColor.lightGray {
+//            noteTextOutlet.text = nil
+//            noteTextOutlet.textColor = UIColor.black
+//        }
+//    }
+//
+//    func textViewDidEndEditing(_ textView: UITextView) {
+//        if noteTextOutlet.text.isEmpty {
+//            noteTextOutlet.text = placeholder
+//            noteTextOutlet.textColor = UIColor.lightGray
+//        }
+//    }
 
     func textViewDidChange(_ textView: UITextView) {
         checkSaveButtonEnabled()
