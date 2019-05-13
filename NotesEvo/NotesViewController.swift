@@ -23,18 +23,18 @@ class NotesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        notes = dataManager.getNotes()
-//        getNotes()
+//        notes = dataManager.getNotes()
+        getNotes()
         tableView.tableFooterView = UIView()
     }
 
     @IBAction func AddNote(_ sender: UIBarButtonItem) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "CreateNewNoteViewController") as! CreateNewNoteViewController
         vc.callback = { [weak self] in
-            guard let wself = self else { return }
-            wself.notes = wself.dataManager.getNotes()
-            wself.tableView.reloadData()
-//            self?.getNotes()
+//            guard let wself = self else { return }
+//            wself.notes = wself.dataManager.getNotes()
+//            wself.tableView.reloadData()
+            self?.getNotes()
         }
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -48,20 +48,6 @@ class NotesViewController: UIViewController {
         }
         tableView.reloadData()
     }
-
-//    @objc func keyboardWillShow(notification: NSNotification) {
-//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-//            if self.searchBar.frame.origin.y == 562 {
-//                self.searchBar.frame.origin.y -= keyboardSize.height - 50
-//            }
-//        }
-//    }
-//
-//    @objc func keyboardWillHide(notification: NSNotification) {
-//        if self.searchBar.frame.origin.y != 562 {
-//            self.searchBar.frame.origin.y = 562
-//        }
-//    }
 
 }
 
@@ -85,8 +71,15 @@ extension NotesViewController: UITableViewDelegate, UITableViewDataSource {
         let vc = storyboard?.instantiateViewController(withIdentifier: "NoteDetailsViewController") as! NoteDetailsViewController
         let note = notes[indexPath.row]
         vc.passedNote = note.text ?? "Empty note"
+        vc.callback = { [weak self] in
+            if Constants.context.hasChanges {
+                self?.notes.remove(at: indexPath.row)
+            }
+            self?.getNotes()
+        }
 
         navigationController?.pushViewController(vc, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -94,34 +87,29 @@ extension NotesViewController: UITableViewDelegate, UITableViewDataSource {
             Constants.context.delete(notes[indexPath.row])
             notes.remove(at: indexPath.row)
 
-//            let note = notes[indexPath.row]
-
             dataManager.saveNote()
 
             self.tableView.reloadData()
         }
     }
+    
 }
 
 extension NotesViewController: UISearchBarDelegate {
 
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let request : NSFetchRequest<Note> = Note.fetchRequest()
-
-        request.predicate = NSPredicate(format: "text CONTAINS[c] %@", searchBar.text!)
-
-        request.sortDescriptors = [NSSortDescriptor(key: "text", ascending: true)]
-
-        getNotes(with: request)
-    }
-
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchBar.returnKeyType = UIReturnKeyType.done
         if searchBar.text?.count == 0 {
             getNotes()
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
             }
         } else {
+            let request : NSFetchRequest<Note> = Note.fetchRequest()
+            request.predicate = NSPredicate(format: "text CONTAINS[c] %@", searchBar.text!)
+            request.sortDescriptors = [NSSortDescriptor(key: "text", ascending: true)]
+
+            getNotes(with: request)
             self.tableView.reloadData()
         }
     }
@@ -132,21 +120,4 @@ extension NotesViewController: UISearchBarDelegate {
 
         getNotes()
     }
-
-//    func updateSearchResults(for searchController: UISearchController) {
-//        searchController.searchResultsUpdater = self
-//    }
-
 }
-//
-//extension UIViewController {
-//    func hideKeyboardWhenTappedAround() {
-//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-//        tap.cancelsTouchesInView = false
-//        view.addGestureRecognizer(tap)
-//    }
-//
-//    @objc func dismissKeyboard() {
-//        view.endEditing(true)
-//    }
-//}

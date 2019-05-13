@@ -17,6 +17,7 @@ class CreateNewNoteViewController: UIViewController {
 //    private let placeholder = "Что вы хотите добавить в заметки?"
 //    private let contextManager = ContextManager.sharedInstance
     private let dataManager = DataManager.sharedInstance
+    
     var callback: (()->())?
 
     override func viewDidLoad() {

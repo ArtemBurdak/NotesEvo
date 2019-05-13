@@ -78,8 +78,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kce-YY-1OH">
-                                <rect key="frame" x="16" y="48" width="343" height="209"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kce-YY-1OH">
+                                <rect key="frame" x="16" y="108" width="343" height="209"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -89,8 +89,22 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="XPq-2S-Ldg"/>
                     </view>
-                    <navigationItem key="navigationItem" id="dBU-SD-GXd"/>
+                    <navigationItem key="navigationItem" id="dBU-SD-GXd">
+                        <rightBarButtonItems>
+                            <barButtonItem style="plain" systemItem="edit" id="pnG-5x-1m1">
+                                <connections>
+                                    <action selector="editButtonAction:" destination="eOZ-fy-RUA" id="6MV-ij-iuk"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem style="plain" systemItem="action" id="e7Q-In-f9e">
+                                <connections>
+                                    <action selector="shareButtonAction:" destination="eOZ-fy-RUA" id="zVs-6W-q8e"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <connections>
+                        <outlet property="editButtonOutlet" destination="pnG-5x-1m1" id="M7E-be-71G"/>
                         <outlet property="noteDetailOutlet" destination="Kce-YY-1OH" id="Mnl-RD-Z1S"/>
                     </connections>
                 </viewController>
@@ -107,7 +121,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RCX-tO-ZXg">
-                                <rect key="frame" x="16" y="94" width="343" height="120"/>
+                                <rect key="frame" x="16" y="94" width="343" height="220"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -137,7 +151,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hva-GQ-NGP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2577" y="491"/>
+            <point key="canvasLocation" x="2576.8000000000002" y="490.70464767616198"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="x7z-x4-2DJ">
