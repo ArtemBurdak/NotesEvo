@@ -23,9 +23,6 @@ class CreateNewNoteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        noteTextOutlet.text = placeholder
-//        noteTextOutlet.textColor = UIColor.lightGray
-//        navigationItem.title = "Create new note"
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -53,20 +50,6 @@ class CreateNewNoteViewController: UIViewController {
 }
 
 extension CreateNewNoteViewController: UITextViewDelegate {
-
-//    func textViewDidBeginEditing(_ textView: UITextView) {
-//        if noteTextOutlet.textColor == UIColor.lightGray {
-//            noteTextOutlet.text = nil
-//            noteTextOutlet.textColor = UIColor.black
-//        }
-//    }
-//
-//    func textViewDidEndEditing(_ textView: UITextView) {
-//        if noteTextOutlet.text.isEmpty {
-//            noteTextOutlet.text = placeholder
-//            noteTextOutlet.textColor = UIColor.lightGray
-//        }
-//    }
 
     func textViewDidChange(_ textView: UITextView) {
         checkSaveButtonEnabled()

@@ -7,55 +7,46 @@
 //
 
 import UIKit
+import CoreData
 
 class NoteDetailsViewController: UIViewController {
 
     @IBOutlet weak var noteDetailOutlet: UITextView!
 
-    @IBOutlet weak var editButtonOutlet: UIBarButtonItem!
+    @IBOutlet weak var doneButtonOutlet: UIBarButtonItem!
 
     private let dataManager = DataManager.sharedInstance
 
     var passedNote = ""
 
-    let notes = [Note]()
-
     var activity: UIActivityViewController?
 
     var callback: (()->())?
 
+    var note: Note?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        noteDetailOutlet.text = passedNote
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        checkEditButtonState()
-
-    }
-
-    @IBAction func editButtonAction(_ sender: Any) {
         noteDetailOutlet.becomeFirstResponder()
-        checkEditButtonState()
-        editNote()
+        noteDetailOutlet.text = passedNote
+        checkDoneButtonIsEnabled()
     }
 
-    func checkEditButtonState() {
-        if noteDetailOutlet.text != passedNote {
-            editButtonOutlet.title = "Save"
-        }
-    }
-
-    func editNote() {
-        if noteDetailOutlet.text != passedNote {
+    @IBAction func doneButtonAction(_ sender: Any) {
         let editedNote = Note(context: Constants.context)
         editedNote.text = noteDetailOutlet.text
+        note?.text = noteDetailOutlet.text
         dataManager.saveNote()
         navigationController?.popViewController(animated: true)
         callback?()
+    }
+
+    func checkDoneButtonIsEnabled() {
+        if noteDetailOutlet.text != passedNote && !noteDetailOutlet.text.isEmpty && !noteDetailOutlet.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
+            doneButtonOutlet.isEnabled = true
+        } else {
+            doneButtonOutlet.isEnabled = false
         }
     }
 
@@ -71,7 +62,7 @@ class NoteDetailsViewController: UIViewController {
 extension NoteDetailsViewController: UITextViewDelegate {
 
     func textViewDidChange(_ textView: UITextView) {
-        checkEditButtonState()
+        checkDoneButtonIsEnabled()
     }
 
 }

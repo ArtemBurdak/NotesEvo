@@ -17,6 +17,8 @@ class NotesViewController: UIViewController {
 
     var notes = [Note]()
 
+//    let note: Note?
+
     private let dataManager = DataManager.sharedInstance
 
 //    private let contextManager = ContextManager.sharedInstance
@@ -49,6 +51,19 @@ class NotesViewController: UIViewController {
         tableView.reloadData()
     }
 
+    @IBAction func sortButtonAction(_ sender: UIBarButtonItem) {
+
+//        let note = self.note
+//
+//        do {
+//        try note.
+//            sort(by: $0. < $1.someSortableField)
+////            { $0.name < $1.name }
+//        } catch {
+//            print(error)
+//        }
+    }
+
 }
 
 extension NotesViewController: UITableViewDelegate, UITableViewDataSource {
@@ -72,9 +87,10 @@ extension NotesViewController: UITableViewDelegate, UITableViewDataSource {
         let note = notes[indexPath.row]
         vc.passedNote = note.text ?? "Empty note"
         vc.callback = { [weak self] in
-            if Constants.context.hasChanges {
-                self?.notes.remove(at: indexPath.row)
-            }
+//            if vc.noteDetailOutlet.text != note.text {
+//                self?.notes.remove(at: indexPath.row)
+//                self?.dataManager.saveNote()
+//            }
             self?.getNotes()
         }
 
