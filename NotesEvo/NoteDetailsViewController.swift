@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 
 class NoteDetailsViewController: UIViewController {
 
@@ -17,33 +16,30 @@ class NoteDetailsViewController: UIViewController {
 
     private let dataManager = DataManager.sharedInstance
 
-    var passedNote = ""
-
-    var activity: UIActivityViewController?
-
     var callback: (()->())?
 
-    var note: Note?
+    var note: Note!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         noteDetailOutlet.becomeFirstResponder()
-        noteDetailOutlet.text = passedNote
+        noteDetailOutlet.text = note.text
         checkDoneButtonIsEnabled()
     }
 
     @IBAction func doneButtonAction(_ sender: Any) {
-        let editedNote = Note(context: Constants.context)
-        editedNote.text = noteDetailOutlet.text
-        note?.text = noteDetailOutlet.text
-        dataManager.saveNote()
+        note.text = noteDetailOutlet.text
+        dataManager.saveNotes()
         navigationController?.popViewController(animated: true)
         callback?()
     }
 
     func checkDoneButtonIsEnabled() {
-        if noteDetailOutlet.text != passedNote && !noteDetailOutlet.text.isEmpty && !noteDetailOutlet.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
+        if noteDetailOutlet.text != note.text &&
+            !noteDetailOutlet.text.isEmpty &&
+            !noteDetailOutlet.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
+
             doneButtonOutlet.isEnabled = true
         } else {
             doneButtonOutlet.isEnabled = false
@@ -52,11 +48,10 @@ class NoteDetailsViewController: UIViewController {
 
     @IBAction func shareButtonAction(_ sender: UIBarButtonItem) {
         guard let sharedNote = noteDetailOutlet.text else { return }
-        activity = UIActivityViewController(activityItems: [sharedNote], applicationActivities: nil)
-        self.present(activity!, animated: true, completion: nil)
-        
+        present(UIActivityViewController(activityItems: [sharedNote], applicationActivities: nil),
+                animated: true,
+                completion: nil)
     }
-
 }
 
 extension NoteDetailsViewController: UITextViewDelegate {
@@ -64,5 +59,4 @@ extension NoteDetailsViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         checkDoneButtonIsEnabled()
     }
-
 }

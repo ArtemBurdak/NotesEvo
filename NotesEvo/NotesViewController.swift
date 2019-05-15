@@ -7,25 +7,21 @@
 //
 
 import UIKit
-import CoreData
 
 class NotesViewController: UIViewController {
 
+    @IBOutlet weak var item: UINavigationItem!
     @IBOutlet weak var tableView: UITableView!
 
     @IBOutlet weak var searchBar: UISearchBar!
 
     var notes = [Note]()
 
-//    let note: Note?
-
     private let dataManager = DataManager.sharedInstance
-
-//    private let contextManager = ContextManager.sharedInstance
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        notes = dataManager.getNotes()
+
         getNotes()
         tableView.tableFooterView = UIView()
     }
@@ -33,37 +29,36 @@ class NotesViewController: UIViewController {
     @IBAction func AddNote(_ sender: UIBarButtonItem) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "CreateNewNoteViewController") as! CreateNewNoteViewController
         vc.callback = { [weak self] in
-//            guard let wself = self else { return }
-//            wself.notes = wself.dataManager.getNotes()
-//            wself.tableView.reloadData()
             self?.getNotes()
         }
         navigationController?.pushViewController(vc, animated: true)
     }
 
-    func getNotes(with request: NSFetchRequest<Note> = Note.fetchRequest()) {
-
-        do {
-            notes = try Constants.context.fetch(request)
-        } catch {
-            print("Loading error \(error)")
-        }
-        tableView.reloadData()
-    }
-
     @IBAction func sortButtonAction(_ sender: UIBarButtonItem) {
 
-//        let note = self.note
-//
-//        do {
-//        try note.
-//            sort(by: $0. < $1.someSortableField)
-////            { $0.name < $1.name }
-//        } catch {
-//            print(error)
-//        }
+        let alert = UIAlertController(title: "Sorting direction", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Ascending", style: .default, handler: { _ in self.sortNotes(true) }))
+        alert.addAction(UIAlertAction(title: "Descending", style: .default, handler: { _ in self.sortNotes(false) }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true)
     }
 
+    private func getNotes(_ text: String? = nil) {
+        notes = dataManager.getNotes(text)
+        sortNotes()
+    }
+
+    private func sortNotes(_ isAscending: Bool = true) {
+
+        notes.sort(by: { (first, second) -> Bool in
+            if let fText = first.text, let sText = second.text {
+                return isAscending ? fText < sText : fText > sText
+            }
+            return false
+        })
+        tableView.reloadData()
+    }
 }
 
 extension NotesViewController: UITableViewDelegate, UITableViewDataSource {
@@ -85,27 +80,19 @@ extension NotesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "NoteDetailsViewController") as! NoteDetailsViewController
         let note = notes[indexPath.row]
-        vc.passedNote = note.text ?? "Empty note"
+        vc.note = note
         vc.callback = { [weak self] in
-//            if vc.noteDetailOutlet.text != note.text {
-//                self?.notes.remove(at: indexPath.row)
-//                self?.dataManager.saveNote()
-//            }
             self?.getNotes()
         }
 
         navigationController?.pushViewController(vc, animated: true)
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
-            Constants.context.delete(notes[indexPath.row])
+            dataManager.removeNote(notes[indexPath.row])
             notes.remove(at: indexPath.row)
-
-            dataManager.saveNote()
-
-            self.tableView.reloadData()
+            tableView.reloadData()
         }
     }
     
@@ -113,19 +100,22 @@ extension NotesViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension NotesViewController: UISearchBarDelegate {
 
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+    }
+
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchBar.returnKeyType = UIReturnKeyType.done
-        if searchBar.text?.count == 0 {
+        if searchBar.text?.isEmpty ?? true {
             getNotes()
-            DispatchQueue.main.async {
-                searchBar.resignFirstResponder()
-            }
+            searchBar.resignFirstResponder()
         } else {
-            let request : NSFetchRequest<Note> = Note.fetchRequest()
-            request.predicate = NSPredicate(format: "text CONTAINS[c] %@", searchBar.text!)
-            request.sortDescriptors = [NSSortDescriptor(key: "text", ascending: true)]
 
-            getNotes(with: request)
+            getNotes(searchBar.text!)
             self.tableView.reloadData()
         }
     }
@@ -133,6 +123,7 @@ extension NotesViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
         searchBar.endEditing(true)
+        searchBar.showsCancelButton = false
 
         getNotes()
     }

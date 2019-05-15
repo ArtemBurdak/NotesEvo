@@ -7,23 +7,15 @@
 //
 
 import UIKit
-import CoreData
 
 class CreateNewNoteViewController: UIViewController {
     
     @IBOutlet weak var noteTextOutlet: UITextView!
     @IBOutlet weak var saveBtnOutlet: UIBarButtonItem!
 
-//    private let placeholder = "Что вы хотите добавить в заметки?"
-//    private let contextManager = ContextManager.sharedInstance
     private let dataManager = DataManager.sharedInstance
     
     var callback: (()->())?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -39,10 +31,9 @@ class CreateNewNoteViewController: UIViewController {
 
     @IBAction func saveBtnAction(_ sender: UIBarButtonItem) {
 
-//        contextManager.saveNote(noteTextOutlet.text)
         let newNote = Note(context: Constants.context)
         newNote.text = noteTextOutlet.text
-        dataManager.saveNote()
+        dataManager.saveNotes()
         navigationController?.popViewController(animated: true)
         callback?()
     }
